@@ -13,9 +13,6 @@ This project is built using **Next.js**, **Tailwind CSS**, and **TypeScript**. I
 - **TypeScript**  
   The entire codebase is developed in TypeScript to ensure type safety and improved maintainability.
 
-- **Excel Template Upload**  
-  A template Excel file is provided in the `template` folder for users to upload data. The application processes the Excel file in the backend, validates the data, and renders the results on the website.
-
 - **Multiple Sheets for Data Population**  
   The provided Excel file contains **9 sheets** (each corresponding to a different table). For example:
 
@@ -47,7 +44,7 @@ This project is built using **Next.js**, **Tailwind CSS**, and **TypeScript**. I
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
+- Node.js (v20 or higher)
 - npm or yarn
 - Google Sheets API credentials
 
@@ -56,8 +53,8 @@ This project is built using **Next.js**, **Tailwind CSS**, and **TypeScript**. I
 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/your-username/your-repo-name.git
-   cd your-repo-name
+   git clone https://github.com/abhirock1998/csk.git
+   cd csk
    ```
 
 2. **Install Dependencies:**
@@ -70,7 +67,7 @@ This project is built using **Next.js**, **Tailwind CSS**, and **TypeScript**. I
 
 3. **Configure Environment Variables:**
 
-   Create a `.env.local` file in the root of the project and add your configuration variables (e.g., Google Sheets API credentials, etc.).
+   Create a `.env` file in the root of the project and add your configuration variables (e.g., Google Sheets API credentials, etc.).
 
 4. **Run the Development Server:**
 
@@ -130,3 +127,38 @@ This project is built using **Next.js**, **Tailwind CSS**, and **TypeScript**. I
 # Google Sheet URL
 
 > This URL points to the Google Sheet where user interest form responses are captured in real-time. It serves as a live storage for all submissions, ensuring that each response is immediately recorded and available for subsequent review and processing. [here](https://docs.google.com/spreadsheets/d/1InQMJbKVJVSYNh0KL7rkbuzy0Ad1ReeV5TnvcoaO2yg/edit?usp=sharing)
+
+---
+
+# ENV Configuration
+
+### Google Sheets API Configuration
+
+To enable seamless integration with Google Sheets, you need to set up the following environment variables in your `.env` file. These credentials allow the application to authenticate and interact with Google Sheets for data storage and retrieval.
+
+### Required Environment Variables
+
+- **`GOOGLE_SERVICE_ACCOUNT_EMAIL`**  
+  This is the email address associated with your Google Service Account. It is required for authentication when accessing Google Sheets programmatically.
+
+- **`GOOGLE_PRIVATE_KEY`**  
+  The private key associated with your Google Service Account. This key is used to sign API requests and establish a secure connection to Google Sheets.
+
+- **`GOOGLE_SHEET_ID`**  
+  The unique identifier for the main Google Sheet where processed data is stored. This sheet serves as the primary database for financial data uploaded through the application.
+
+- **`GOOGLE_INTEREST_SHEET_ID`**  
+  The unique identifier for the Google Sheet where user interest form responses are recorded in real-time. This sheet is specifically used to track user submissions and collect relevant information for analysis.
+
+### How to Configure
+
+1. Obtain your Google Service Account credentials from the **Google Cloud Console**.
+2. Share access to the relevant Google Sheets with the **service account email** (ensure **Editor** permissions).
+3. Add the credentials to your `.env` file as follows:
+
+   ```ini
+   GOOGLE_SERVICE_ACCOUNT_EMAIL="your-service-account@your-project.iam.gserviceaccount.com"
+   GOOGLE_PRIVATE_KEY="your-private-key"
+   GOOGLE_SHEET_ID="your-main-google-sheet-id"
+   GOOGLE_INTEREST_SHEET_ID="your-interest-sheet-id"
+   ```
