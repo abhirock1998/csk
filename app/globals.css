@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+  @apply box-border m-0;
+}
+
+body {
+  font-family: var(--font-inter);
+  font-size: 16px;
+}
+
+@media screen and (max-width: 640px) {
+  body {
+    font-size: 14px !important;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-bold;
+  margin-bottom: 10px;
+}
+
+b,
+strong {
+  @apply font-bold;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+h4 {
+  margin-top: 10px;
+  font-size: 18px;
+  line-height: 24px;
+}
