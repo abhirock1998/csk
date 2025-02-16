@@ -83,7 +83,7 @@ export const processAndValidateData = (file: File) => {
                 const dateColumnIndex = fileHeaders.indexOf("Date");
 
                 // Transform array data into object format
-                const formattedData = rowData.map((row) => {
+                const formattedData = rowData.map((row, rowIndex) => {
                   let obj: any = {};
                   fileHeaders.forEach((header, index) => {
                     const rowValue = row[index] || "";
@@ -93,7 +93,7 @@ export const processAndValidateData = (file: File) => {
                     if (isStockSheet && index === dateColumnIndex) {
                       const isValid = validateDate(rowValue);
                       if (!isValid) {
-                        const rowId = index + 2;
+                        const rowId = rowIndex + 2;
                         const message = `Invalid date found in "${sheetName}" at row ${rowId}: "${rowValue}". Expected format: YYYY-MM-DD. Skipping....`;
                         warnings.push(message);
                       }
