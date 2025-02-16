@@ -1,6 +1,6 @@
 import * as XLSX from "xlsx";
-
-import { SHEET_REQUIRED_COLUMNS } from "@/constants/sheet";
+import { parse, isValid } from "date-fns";
+import { SHEET_CONFIG, SHEET_REQUIRED_COLUMNS } from "@/constants/sheet";
 
 export const getFileExtension = (filename: string) => {
   return filename.split(".").pop() ?? "";
@@ -8,7 +8,6 @@ export const getFileExtension = (filename: string) => {
 
 const arraysEqual = (arr1: any[], arr2: any[]): boolean => {
   if (arr1.length !== arr2.length) return false;
-  console.log(arr1, arr2);
 
   const set1 = new Set(arr1.map((item) => String(item).toLowerCase().trim()));
   const set2 = new Set(arr2.map((item) => String(item).toLowerCase().trim()));
@@ -53,7 +52,7 @@ export const processAndValidateData = (file: File) => {
             const opts = { header: 1, raw: false };
             const jsonData: any[] = XLSX.utils.sheet_to_json(sheet, opts);
 
-            const fileHeaders: any[] = jsonData[0] ?? [];
+            const fileHeaders: any[] = jsonData[0] || [];
 
             for (const key of Object.keys(SHEET_REQUIRED_COLUMNS)) {
               const values = (SHEET_REQUIRED_COLUMNS as any)[key] ?? [];
@@ -79,19 +78,26 @@ export const processAndValidateData = (file: File) => {
                 }
 
                 const isStockSheet =
-                  SHEET_REQUIRED_COLUMNS[7][0].tableOrder === tableOrder;
+                  `${SHEET_CONFIG.StockPrice}1` === `${key}${tableOrder}`;
 
-                console.log({
-                  isStockSheet,
-                  tableOrder,
-                  data: SHEET_REQUIRED_COLUMNS[7],
-                });
+                const dateColumnIndex = fileHeaders.indexOf("Date");
 
                 // Transform array data into object format
                 const formattedData = rowData.map((row) => {
                   let obj: any = {};
                   fileHeaders.forEach((header, index) => {
-                    obj[header] = row[index] || "";
+                    const rowValue = row[index] || "";
+                    obj[header] = rowValue;
+
+                    // Validate DateColumn when isStockSheet is true
+                    if (isStockSheet && index === dateColumnIndex) {
+                      const isValid = validateDate(rowValue);
+                      if (!isValid) {
+                        const rowId = index + 2;
+                        const message = `Invalid date found in "${sheetName}" at row ${rowId}: "${rowValue}". Expected format: YYYY-MM-DD. Skipping....`;
+                        warnings.push(message);
+                      }
+                    }
                   });
                   return obj;
                 });
@@ -117,4 +123,13 @@ export const processAndValidateData = (file: File) => {
       reject(`Error while uploading file: ${error}`);
     }
   });
+};
+
+const validateDate = (date: string) => {
+  try {
+    const parsedDate = parse(date, "yyyy-MM-dd", new Date());
+    return isValid(parsedDate);
+  } catch (error) {
+    return false;
+  }
 };

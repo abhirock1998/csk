@@ -121,6 +121,8 @@ const getChartOptions = (data: any[]): ApexOptions => {
         allowMouseWheelZoom: false,
         enabled: false,
       },
+      redrawOnParentResize: true,
+      redrawOnWindowResize: true,
     },
     xaxis: {
       categories: data.map((item) => item?.Date),
