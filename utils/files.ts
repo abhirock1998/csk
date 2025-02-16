@@ -78,6 +78,15 @@ export const processAndValidateData = (file: File) => {
                   continue;
                 }
 
+                const isStockSheet =
+                  SHEET_REQUIRED_COLUMNS[7][0].tableOrder === tableOrder;
+
+                console.log({
+                  isStockSheet,
+                  tableOrder,
+                  data: SHEET_REQUIRED_COLUMNS[7],
+                });
+
                 // Transform array data into object format
                 const formattedData = rowData.map((row) => {
                   let obj: any = {};
