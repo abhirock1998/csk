@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-const AllowedValues = ["BUY", "SELL"];
-
 export const buySellFormSchema = z.object({
   name: z.string().min(2, "Name is required"),
   email: z.string().email("Invalid email"),

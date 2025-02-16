@@ -13,7 +13,7 @@ const Accordion = ({ answer, question }: AccordionProps) => {
     <div className="border-b border-[#eaecf0]">
       <div
         onClick={() => setIsOpen((pre) => !pre)}
-        className="cursor-pointer justify-between items-center py-6 flex"
+        className="cursor-pointer justify-between items-center py-6 flex gap-x-4"
       >
         <div className="tracking-normal mt-0 mb-0 text-[1.125rem] font-medium leading-[1.5rem] text-text_color">
           {question}
